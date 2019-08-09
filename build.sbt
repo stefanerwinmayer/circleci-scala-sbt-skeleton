@@ -15,10 +15,10 @@ lazy val root = (project in file("."))
 
 import sbtsonar.SonarPlugin.autoImport.sonarProperties
 
-sonarProperties ++= Map(
+sonarProperties := Map(
   "sonar.projectKey" -> "stefanerwinmayer_scalacheck-examples",
   "sonar.organization" -> "stefanerwinmayer-github",
-  "sonar.sources" -> ".",
+  "sonar.sources" -> "src/",
   "sonar.host.url" -> "https://sonarcloud.io",
   "sonar.login" -> "***REMOVED***"
 )
