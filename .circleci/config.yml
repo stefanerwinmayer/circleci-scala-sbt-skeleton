@@ -32,20 +32,20 @@ jobs:
             - v1-dependencies-
 
       - run:
-          - name: Check that files are formatted properly
-          - command: cat /dev/null | sbt scalafmtSbtCheck
+          name: Check that files are formatted properly
+          command: cat /dev/null | sbt scalafmtSbtCheck
 
       - run:
-          - name: Ensure that dependencies are up-to-date
-          - command: cat /dev/null | sbt dependencyUpdatesFailBuild
+          name: Ensure that dependencies are up-to-date
+          command: cat /dev/null | sbt dependencyUpdatesFailBuild
 
       - run:
-          - name: Run Sonar code analysis
-          - command: cat /dev/null | sbt sonarScan
+          name: Run Sonar code analysis
+          command: cat /dev/null | sbt sonarScan
 
       - run:
-          - name: Compile
-          - command: cat /dev/null | sbt test:compile
+          name: Compile
+          command: cat /dev/null | sbt test:compile
 
       - save_cache:
           paths:
@@ -53,5 +53,5 @@ jobs:
           key: v1-dependencies--{{ checksum "build.sbt" }}
 
       - run:
-          - name: Run tests
-          - command: cat /dev/null | sbt test:test
+          name: Run tests
+          command: cat /dev/null | sbt test:test
