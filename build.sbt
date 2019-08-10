@@ -12,3 +12,14 @@ lazy val root = (project in file("."))
   )
 
 // See https://www.scala-sbt.org/1.x/docs/Using-Sonatype.html for instructions on how to publish to Sonatype.
+
+import sbtsonar.SonarPlugin.autoImport.sonarProperties
+
+sonarProperties ++= Map(
+  "sonar.projectKey" -> "stefanerwinmayer_scalacheck-examples",
+  "sonar.organization" -> "stefanerwinmayer-github",
+  "sonar.sources" -> "src/main/scala",
+  "sonar.tests" -> "src/test/scala",
+  "sonar.host.url" -> "https://sonarcloud.io",
+  "sonar.login" -> scala.sys.env("SONAR_LOGIN")
+)
