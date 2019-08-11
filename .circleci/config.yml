@@ -10,7 +10,7 @@ jobs:
           name: Retrieve sbt
           command: sbt update
       - save_cache:
-          key: key
+          key: v1-dependencies--{{ checksum "build.sbt" }}
           paths:
             - ~/.iv2/cache/
             - ~/.sbt/
@@ -21,7 +21,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: key
+          keys:
+            - v1-dependencies-{{ checksum "build.sbt" }}
+            - v1-dependencies-
       - run:
           name: Check that files are formatted properly
           command: cat /dev/null | sbt scalafmtSbtCheck
