@@ -5,15 +5,23 @@ jobs:
     docker:
       - image: circleci/openjdk:8-jdk
     steps:
+      - checkout
       - run:
           name: Retrieve sbt
           command: sbt update
+      - save_cache:
+          key: key
+          paths:
+            - .iv2/cache/
+            - .sbt/
 
   ensure_formatting:
     docker:
       - image: circleci/openjdk:8-jdk
     steps:
       - checkout
+      - restore_cache:
+          key: key
       - run:
           name: Check that files are formatted properly
           command: cat /dev/null | sbt scalafmtSbtCheck
@@ -71,4 +79,6 @@ workflows:
   test:
     jobs:
       - retrieve_sbt
-      - ensure_formatting
+      - ensure_formatting:
+          requires:
+            - retrieve_sbt
