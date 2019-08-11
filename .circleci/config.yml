@@ -1,6 +1,14 @@
 version: 2.1
 jobs:
 
+  retrieve_sbt:
+    docker:
+      - image: circleci/openjdk:8-jdk
+    steps:
+      - run:
+          name: Retrieve sbt
+          command: sbt update
+
   ensure_formatting:
     docker:
       - image: circleci/openjdk:8-jdk
@@ -62,7 +70,5 @@ workflows:
   version: 2.1
   test:
     jobs:
+      - retrieve_sbt
       - ensure_formatting
-      - build:
-          requires:
-            - ensure_formatting
