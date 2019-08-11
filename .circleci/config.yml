@@ -12,8 +12,8 @@ jobs:
       - save_cache:
           key: key
           paths:
-            - .iv2/cache/
-            - .sbt/
+            - ~/.iv2/cache/
+            - ~/.sbt/
 
   ensure_formatting:
     docker:
