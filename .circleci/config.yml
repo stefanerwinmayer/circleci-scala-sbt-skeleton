@@ -5,6 +5,7 @@ jobs:
     docker:
       - image: circleci/openjdk:8-jdk
     steps:
+      - checkout
       - run:
           name: Check that files are formatted properly
           command: cat /dev/null | sbt scalafmtSbtCheck
