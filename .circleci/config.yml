@@ -6,6 +6,9 @@ jobs:
       - image: circleci/openjdk:8-jdk
     steps:
       - checkout
+      - restore_cache:
+          keys:
+            - v1
       - run:
           name: Retrieve sbt
           command: sbt update
