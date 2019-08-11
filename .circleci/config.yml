@@ -1,5 +1,14 @@
 version: 2.1
 jobs:
+
+  ensure_formatting:
+    docker:
+      - image: circleci/openjdk:8-jdk
+    steps:
+      - run:
+          name: Check that files are formatted properly
+          command: cat /dev/null | sbt scalafmtSbtCheck
+
   build:
     docker:
       # specify the version you desire here
@@ -28,10 +37,6 @@ jobs:
             - v1-dependencies-
 
       - run:
-          name: Check that files are formatted properly
-          command: cat /dev/null | sbt scalafmtSbtCheck
-
-      - run:
           name: Ensure that dependencies are up-to-date
           command: cat /dev/null | sbt dependencyUpdatesFailBuild
 
@@ -51,3 +56,12 @@ jobs:
       - run:
           name: Run tests
           command: cat /dev/null | sbt test:test
+
+workflows:
+  version: 2.1
+  test:
+    jobs:
+      - ensure_formatting
+      - build:
+          requires:
+            - ensure_formatting
