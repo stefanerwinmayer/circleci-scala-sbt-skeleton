@@ -1,19 +1,26 @@
 version: 2.1
-jobs:
 
-  retrieve_sbt:
+executors:
+  docker:
     docker:
       - image: circleci/openjdk:8-jdk
+    working_directory: ~/scala-repo
+
+commands:
+  execute:
+    description: "Executes commands in an"
+    parameters:
+      this:
+        type: string
     steps:
       - checkout
       - restore_cache:
           keys:
-            - v1
-      - run:
-          name: Retrieve sbt
-          command: sbt update
+            - v1-dependencies-{{ checksum "build.sbt" }}
+            - v1-dependencies-
+      - run: << parameters.this >>
       - save_cache:
-          key: v1
+          key: v1-dependencies-{{ checksum "build.sbt" }}
           paths:
             - ~/.iv2/cache/
             - ~/.sbt/
@@ -24,29 +31,41 @@ jobs:
             - project/target
             - project/project/target
 
-  ensure_formatting:
-    docker:
-      - image: circleci/openjdk:8-jdk
+jobs:
+  compile:
+    executor: docker
     steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - v1
-      - attach_workspace:
-          at: .
-      - run:
-          name: Check that files are formatted properly
-          command: cat /dev/null | sbt scalafmtSbtCheck
+      - execute:
+          this: "sbt compile test:compile"
+
+  code_formatting:
+    executor: docker
+    steps:
+      - execute:
+          this: "sbt scalafmtSbtCheck"
+
+  dependencies_up_to_date:
+    executor: docker
+    steps:
+      - execute:
+          this: "sbt dependencyUpdatesFailBuild"
+
+  sonar_scan:
+    executor: docker
+    steps:
+      - execute:
+          this: "sbt sonarScan"
+
+  test:
+    executor: docker
+    steps:
+      - execute:
+          this: "sbt test"
 
   build:
     docker:
       # specify the version you desire here
       - image: circleci/openjdk:8-jdk
-
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/postgres:9.4
 
     working_directory: ~/repo
 
@@ -66,14 +85,6 @@ jobs:
             - v1-dependencies-
 
       - run:
-          name: Ensure that dependencies are up-to-date
-          command: cat /dev/null | sbt dependencyUpdatesFailBuild
-
-      - run:
-          name: Run Sonar code analysis
-          command: cat /dev/null | sbt sonarScan
-
-      - run:
           name: Compile
           command: cat /dev/null | sbt test:compile
 
@@ -87,10 +98,18 @@ jobs:
           command: cat /dev/null | sbt test:test
 
 workflows:
-  version: 2.1
-  test:
+  main:
     jobs:
-      - retrieve_sbt
-      - ensure_formatting:
+      - compile
+      - code_formatting:
           requires:
-            - retrieve_sbt
+            - compile
+      - dependencies_up_to_date:
+          requires:
+            - code_formatting
+      - test:
+          requires:
+            - dependencies_up_to_date
+      - sonar_scan:
+          requires:
+            - test
