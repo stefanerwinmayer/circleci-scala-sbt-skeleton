@@ -5,6 +5,9 @@ executors:
     docker:
       - image: circleci/openjdk:8-jdk
     working_directory: ~/scala-repo
+    environment:
+      JVM_OPTS: -Xmx3200m
+      TERM: dumb
 
 commands:
   save_dependency_cache:
