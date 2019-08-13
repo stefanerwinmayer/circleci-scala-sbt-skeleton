@@ -6,8 +6,7 @@ executors:
       - image: circleci/openjdk:8-jdk
     working_directory: ~/scala-repo
     environment:
-      JVM_OPTS: -Xmx3200m
-      TERM: dumb
+      SBT_OPTS="${SBT_OPTS} -Dsbt.io.jdktimestamps=true"
 
 commands:
   save_dependency_cache:
