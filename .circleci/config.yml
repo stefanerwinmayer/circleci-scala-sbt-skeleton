@@ -4,9 +4,7 @@ executors:
   docker:
     docker:
       - image: circleci/openjdk:8-jdk
-    working_directory: ~/scala-repo
-    environment:
-      SBT_OPTS="${SBT_OPTS} -Dsbt.io.jdktimestamps=true"
+    working_directory: ~/scala-rep
 
 commands:
   save_dependency_cache:
