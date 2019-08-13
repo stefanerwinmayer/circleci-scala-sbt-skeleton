@@ -8,7 +8,7 @@ executors:
 
 commands:
   execute:
-    description: "Executes commands in an"
+    description: "Executes commands"
     parameters:
       this:
         type: string
@@ -18,6 +18,8 @@ commands:
           keys:
             - v1-dependencies-{{ checksum "build.sbt" }}
             - v1-dependencies-
+      - attach_workspace:
+          at: .
       - run: << parameters.this >>
       - save_cache:
           key: v1-dependencies-{{ checksum "build.sbt" }}
