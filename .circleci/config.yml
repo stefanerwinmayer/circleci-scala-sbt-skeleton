@@ -42,9 +42,9 @@ commands:
       this:
         type: string
     steps:
+      - checkout
       - retrieve_dependency_cache
       - retrieve_build_cache
-      - checkout
       - run: << parameters.this >>
 
 jobs:
