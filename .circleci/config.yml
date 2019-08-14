@@ -87,6 +87,16 @@ jobs:
       - execute:
           this: "sbt test"
 
+  check_files:
+    executor: docker
+    steps:
+      - run: "sleep 30"
+      - checkout
+      - run: "sleep 30"
+      - retrieve_dependency_cache
+      - run: "sleep 30"
+      - retrieve_build_cache
+
   build:
     docker:
       # specify the version you desire here
@@ -129,17 +139,18 @@ workflows:
       - compile:
           requires:
             - sbt_update
-      - code_formatting:
-          requires:
-            - compile
-      - dependencies_up_to_date:
-          requires:
-            - compile
-      - test:
-          requires:
-            - compile
-      - sonar_scan:
-          requires:
-            - code_formatting
-            - dependencies_up_to_date
-            - test
+      - check_files
+#      - code_formatting:
+#          requires:
+#            - compile
+#      - dependencies_up_to_date:
+#          requires:
+#            - compile
+#      - test:
+#          requires:
+#            - compile
+#      - sonar_scan:
+#          requires:
+#            - code_formatting
+#            - dependencies_up_to_date
+#            - test
