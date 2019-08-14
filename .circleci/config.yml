@@ -6,7 +6,7 @@ jobs:
     docker:
       - image: circleci/openjdk:8-jdk
     environment:
-      TERM: term
+      TERM: dumb
     steps:
       - checkout
       - restore_cache:
