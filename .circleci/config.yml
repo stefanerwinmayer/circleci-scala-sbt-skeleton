@@ -1,148 +1,28 @@
 version: 2.1
 
-executors:
-  docker:
+jobs:
+  build:
+    working_directory: ~/scalacheck-examples
     docker:
       - image: circleci/openjdk:8-jdk
-    working_directory: ~/scala-rep
-
-commands:
-  save_dependency_cache:
+    environment:
+      TERM: term
     steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "build.sbt" }}
+            - v1-dependencies-
+      - run: "sbt update"
       - save_cache:
           key: v1-dependencies-{{ checksum "build.sbt" }}
           paths:
             - ~/.iv2/cache/
             - ~/.sbt/
             - ~/.m2/
-
-  retrieve_dependency_cache:
-    steps:
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "build.sbt" }}
-            - v1-dependencies-
-
-  execute:
-    description: "Executes commands"
-    parameters:
-      this:
-        type: string
-    steps:
-      - checkout
-      - retrieve_dependency_cache
-      - retrieve_build_cache
-      - run: << parameters.this >>
-
-jobs:
-
-  build_new:
-    executor: docker
-    steps:
-      - checkout
-      - retrieve_dependency_cache
-      - run: "sbt update"
-      - save_dependency_cache
       - run: "sbt compile"
       - run: "sbt test:compile"
       - run: "sbt scalafmtSbtCheck"
       - run: "sbt dependencyUpdatesFailBuild"
       - run: "sbt test"
       - run: "sbt sonarScan"
-
-  sbt_update:
-    executor: docker
-    steps:
-      - execute:
-          this: "sbt update"
-      - save_dependency_cache
-      - save_build_cache
-
-  compile:
-    executor: docker
-    steps:
-      - execute:
-          this: "sbt compile test:compile"
-      - save_build_cache
-
-  code_formatting:
-    executor: docker
-    steps:
-      - execute:
-          this: "sbt scalafmtSbtCheck"
-
-  dependencies_up_to_date:
-    executor: docker
-    steps:
-      - execute:
-          this: "sbt dependencyUpdatesFailBuild"
-
-  sonar_scan:
-    executor: docker
-    steps:
-      - execute:
-          this: "sbt sonarScan"
-
-  test:
-    executor: docker
-    steps:
-      - execute:
-          this: "sbt test"
-
-  build:
-    docker:
-      # specify the version you desire here
-      - image: circleci/openjdk:8-jdk
-
-    working_directory: ~/repo
-
-    environment:
-      # Customize the JVM maximum heap limit
-      JVM_OPTS: -Xmx3200m
-      TERM: dumb
-
-    steps:
-      - checkout
-
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "build.sbt" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
-
-      - run:
-          name: Compile
-          command: cat /dev/null | sbt test:compile
-
-      - save_cache:
-          paths:
-            - ~/.m2
-          key: v1-dependencies--{{ checksum "build.sbt" }}
-
-      - run:
-          name: Run tests
-          command: cat /dev/null | sbt test:test
-
-workflows:
-  main:
-    jobs:
-      - build_new
-#      - sbt_update
-#      - compile:
-#          requires:
-#            - sbt_update
-#      - code_formatting:
-#          requires:
-#            - compile
-#      - dependencies_up_to_date:
-#          requires:
-#            - compile
-#      - test:
-#          requires:
-#            - compile
-#      - sonar_scan:
-#          requires:
-#            - code_formatting
-#            - dependencies_up_to_date
-#            - test
