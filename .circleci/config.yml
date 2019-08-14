@@ -42,9 +42,9 @@ jobs:
       - checkout
       - retrieve_dependency_cache
       - run: "sbt update"
+      - save_dependency_cache
       - run: "sbt compile"
       - run: "sbt test:compile"
-      - save_dependency_cache
       - run: "scalafmtSbtCheck"
       - run: "dependencyUpdatesFailBuild"
       - run: "sbt test"
