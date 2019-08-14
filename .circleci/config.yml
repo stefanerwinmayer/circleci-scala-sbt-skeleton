@@ -41,6 +41,7 @@ jobs:
     steps:
       - checkout
       - retrieve_dependency_cache
+      - run: "sbt update"
       - run: "sbt compile"
       - run: "sbt test:compile"
       - save_dependency_cache
