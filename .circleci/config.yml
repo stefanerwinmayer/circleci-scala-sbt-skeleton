@@ -139,7 +139,9 @@ workflows:
       - compile:
           requires:
             - sbt_update
-      - check_files
+      - check_files:
+          requires:
+            - compile
 #      - code_formatting:
 #          requires:
 #            - compile
