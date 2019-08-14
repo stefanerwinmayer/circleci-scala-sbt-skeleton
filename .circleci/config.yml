@@ -45,7 +45,7 @@ jobs:
       - save_dependency_cache
       - run: "sbt compile"
       - run: "sbt test:compile"
-      - run: "scalafmtSbtCheck"
+      - run: "sbt scalafmtSbtCheck"
       - run: "dependencyUpdatesFailBuild"
       - run: "sbt test"
       - run: "sbt sonarScan"
