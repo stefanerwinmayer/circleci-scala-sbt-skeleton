@@ -20,7 +20,9 @@ sonarProperties ++= Map(
   "sonar.organization" -> "stefanerwinmayer-github",
   "sonar.sources" -> "src/main/scala",
   "sonar.tests" -> "src/test/scala",
-  "sonar.host.url" -> "https://sonarcloud.io"
+  "sonar.host.url" -> "https://sonarcloud.io",
+  "sonar.scala.scoverage.reportPath" -> "target/scala-2.12/scoverage-report/scoverage.xml",
+  "sonar.scala.scapegoat.reportPath" -> "target/scala-2.12/scapegoat-report/scapegoat.xml"
 )
 
 scapegoatVersion in ThisBuild := "1.3.8"
