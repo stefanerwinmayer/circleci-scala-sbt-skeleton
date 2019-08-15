@@ -1,6 +1,6 @@
 import Dependencies._
 
-ThisBuild / scalaVersion := "2.13.0"
+ThisBuild / scalaVersion := "2.12.9"
 ThisBuild / version := "0.1.0-SNAPSHOT"
 ThisBuild / organization := "com.example"
 ThisBuild / organizationName := "example"
@@ -22,3 +22,5 @@ sonarProperties ++= Map(
   "sonar.tests" -> "src/test/scala",
   "sonar.host.url" -> "https://sonarcloud.io"
 )
+
+scapegoatVersion in ThisBuild := "1.3.8"
