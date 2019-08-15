@@ -25,4 +25,4 @@ jobs:
       - run: "sbt scalafmtSbtCheck"
       - run: "sbt dependencyUpdatesFailBuild"
       - run: "sbt test"
-      - run: "sbt sonarScan"
+      - run: "sbt -Dsonar.login=$SONAR_LOGIN sonarScan"

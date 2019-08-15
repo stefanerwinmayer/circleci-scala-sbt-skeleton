@@ -20,6 +20,5 @@ sonarProperties ++= Map(
   "sonar.organization" -> "stefanerwinmayer-github",
   "sonar.sources" -> "src/main/scala",
   "sonar.tests" -> "src/test/scala",
-  "sonar.host.url" -> "https://sonarcloud.io",
-  "sonar.login" -> scala.sys.env("SONAR_LOGIN")
+  "sonar.host.url" -> "https://sonarcloud.io"
 )
