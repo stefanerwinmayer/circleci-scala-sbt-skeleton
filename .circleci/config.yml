@@ -24,6 +24,7 @@ jobs:
       - run: "sbt test:compile"
       - run: "sbt scalafmtSbtCheck"
       - run: "sbt dependencyUpdatesFailBuild"
-      - run: "sbt test"
+      - run: "sbt coverage test"
+      - run: "sbt coverageReport"
       - run: "sbt scapegoat"
       - run: "sbt -Dsonar.login=$SONAR_LOGIN sonarScan"
