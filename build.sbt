@@ -28,3 +28,5 @@ sonarProperties ++= Map(
 scapegoatVersion in ThisBuild := "1.3.8"
 
 coverageEnabled := true
+
+wartremoverWarnings ++= Warts.all
