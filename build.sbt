@@ -22,7 +22,8 @@ sonarProperties ++= Map(
   "sonar.tests" -> "src/test/scala",
   "sonar.host.url" -> "https://sonarcloud.io",
   "sonar.scala.coverage.reportPaths" -> "target/scala-2.12/scoverage-report/scoverage.xml",
-  "sonar.scala.scapegoat.reportPaths" -> "target/scala-2.12/scapegoat-report/scapegoat-scalastyle.xml"
+  "sonar.scala.scapegoat.reportPaths" -> "target/scala-2.12/scapegoat-report/scapegoat-scalastyle.xml",
+  "sonar.scala.scalastyle.reportPaths" -> "target/scalastyle-result.xml"
 )
 
 scapegoatVersion in ThisBuild := "1.3.8"
