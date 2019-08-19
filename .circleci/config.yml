@@ -2,7 +2,7 @@ version: 2.1
 
 jobs:
   build:
-    working_directory: ~/scalacheck-examples
+    working_directory: ~/circleci-scala-sbt-skeleton
     docker:
       - image: circleci/openjdk:8-jdk
     environment:
