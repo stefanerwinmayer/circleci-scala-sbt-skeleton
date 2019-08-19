@@ -7,7 +7,7 @@ ThisBuild / organizationName := "example"
 
 lazy val root = (project in file("."))
   .settings(
-    name := "ScalaCheck Examples",
+    name := "CircleCi Scala Sbt Skeleton",
     libraryDependencies += scalaTest % Test
   )
 
@@ -16,7 +16,7 @@ lazy val root = (project in file("."))
 import sbtsonar.SonarPlugin.autoImport.sonarProperties
 
 sonarProperties ++= Map(
-  "sonar.projectKey" -> "stefanerwinmayer_scalacheck-examples",
+  "sonar.projectKey" -> "stefanerwinmayer_circleci_scala_sbt_skeleton",
   "sonar.organization" -> "stefanerwinmayer-github",
   "sonar.sources" -> "src/main/scala",
   "sonar.tests" -> "src/test/scala",
